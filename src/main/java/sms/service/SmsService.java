@@ -39,7 +39,7 @@ public class SmsService {
 
 		}
 		else if(sms.getFrom().length()<=6 || sms.getFrom().length()>16) {
-			return new ResponseEntity<Object>("Access denied message here", new HttpHeaders(), HttpStatus.NOT_ACCEPTABLE);
+			return new ResponseEntity<Object>("form length should be greater than 6 and less than 16 ", new HttpHeaders(), HttpStatus.NOT_ACCEPTABLE);
 		}
 
 		if(sms.getTo()==null) {
