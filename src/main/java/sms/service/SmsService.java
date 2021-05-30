@@ -26,13 +26,7 @@ public class SmsService {
 
 
 	public ResponseEntity addMsg(Msg sms) {
-		if(sms.getMessage() == null) {
-			return new ResponseEntity<Object>(" error : FORM is missing parameter", new HttpHeaders(), HttpStatus.METHOD_NOT_ALLOWED);
-		}
-		else if(sms.getMessage().length()<1||sms.getMessage().length()>120) {
-			return new ResponseEntity<Object>("FOrmat error", new HttpHeaders(), HttpStatus.NOT_ACCEPTABLE);
-
-		}
+	
 
 		if(sms.getFrom()==null) {
 			return new ResponseEntity<Object>(" error : FORM is missing parameter", new HttpHeaders(), HttpStatus.METHOD_NOT_ALLOWED);
@@ -50,9 +44,19 @@ public class SmsService {
 			return new ResponseEntity<Object>("To length should be greateer than 6 and less than 17", new HttpHeaders(), HttpStatus.NOT_ACCEPTABLE);
 
 		}
+		
+		if(sms.getMessage() == null) {
+			return new ResponseEntity<Object>(" error : FORM is missing parameter", new HttpHeaders(), HttpStatus.METHOD_NOT_ALLOWED);
+		}
+		else if(sms.getMessage().length()<1||sms.getMessage().length()>120) {
+			return new ResponseEntity<Object>("FOrmat error", new HttpHeaders(), HttpStatus.NOT_ACCEPTABLE);
+
+		}
 
 		if(sms.getMessage().equals("STOP")) {
 			sms.setStopUtill(addHoursToJavaUtilDate(4));
+		}else {
+			sms.setStopUtill(subHoursToJavaUtilDate(1));
 		}
 
 		sms.setCreatedAt(Calendar.getInstance().getTime());
@@ -64,13 +68,7 @@ public class SmsService {
 
 
 	public ResponseEntity  getMSG(Msg sms) {
-		if(sms.getMessage() == null) {
-			return new ResponseEntity<Object>(" error : FORM is missing parameter", new HttpHeaders(), HttpStatus.METHOD_NOT_ALLOWED);
-		}
-		else if(sms.getMessage().length()<1||sms.getMessage().length()>120) {
-			return new ResponseEntity<Object>("Access denied message here", new HttpHeaders(), HttpStatus.NOT_ACCEPTABLE);
-
-		}
+	
 
 		if(sms.getFrom()==null) {
 			return new ResponseEntity<Object>(" error : FORM is missing parameter", new HttpHeaders(), HttpStatus.METHOD_NOT_ALLOWED);
@@ -88,6 +86,13 @@ public class SmsService {
 			return new ResponseEntity<Object>("Access denied message here", new HttpHeaders(), HttpStatus.NOT_ACCEPTABLE);
 
 		}
+		if(sms.getMessage() == null) {
+			return new ResponseEntity<Object>(" error : FORM is missing parameter", new HttpHeaders(), HttpStatus.METHOD_NOT_ALLOWED);
+		}
+		else if(sms.getMessage().length()<1||sms.getMessage().length()>120) {
+			return new ResponseEntity<Object>("", new HttpHeaders(), HttpStatus.NOT_ACCEPTABLE);
+
+		}
 
 		return ResponseEntity.ok("outbound msg is ok");
 
@@ -99,5 +104,13 @@ public class SmsService {
 	    calendar.add(Calendar.HOUR_OF_DAY, hours);
 	    return calendar.getTimeInMillis();
 	}
+	
+
+	public long subHoursToJavaUtilDate( int hours) {
+	    Calendar calendar = Calendar.getInstance();
+	    calendar.add(Calendar.HOUR_OF_DAY, hours);
+	    return calendar.getTimeInMillis();
+	}
+
 
 }
